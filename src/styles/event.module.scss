@@ -1,0 +1,14 @@
+/*
+Width: 700px
+Height: dynamic
+Margins relative to page are up to you (just take the centered requirement into account)
+Shadow: rgba(62, 118, 244, 0.14) (use your own appreciation skills to determine the appropriate offsets)
+Forms of pagination (infinite scroll, load more, etc) will be appreciated, but are not required
+*/
+
+.container {
+    width: 700px;
+    height: auto;
+    box-shadow: 0px 0px 2px 2px rgba(62, 118, 244, 0.14);
+    margin: 1px 10px; //TODO CHECK LATER
+}

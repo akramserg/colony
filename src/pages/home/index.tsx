@@ -3,6 +3,9 @@ import colonyClientMaker from '../../data/colonyClientMaker'
 import eventLogsMaker from '../../data/eventLogsMaker'
 import LogComponent from '../../components/Log'
 import LogList from '../../components/LogList'
+
+import styles from '../../styles/home.module.scss'
+
 interface Props {
 
 }
@@ -23,10 +26,10 @@ const HomePage = (props: Props) => {
     }, [])
 
 
-    return <div>
+    return <div className={styles.container}>
         <div> Home Page</div>
-        <LogList logList={eventLogs} />
-        <LogList logList={parsedLogs} />
+        <LogList logList={eventLogs?.slice(0, 10)} />
+        {/* <LogList logList={parsedLogs?.slice(10)} /> */}
     </div>
 }
 
