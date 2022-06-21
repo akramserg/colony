@@ -1,11 +1,11 @@
 import blockies from './blockies'
-const avatar = () => {
+const avatar = (seed: string) => {
 
     //TODO
     //IMPLEMENT
 
     var icon = blockies.create({ // All options are optional
-        seed: 'randstring', // seed used to generate icon data, default: random
+        seed: seed || 'randstring', // seed used to generate icon data, default: random
         color: '#dfe', // to manually specify the icon color, default: random
         bgcolor: '#aaa', // choose a different background color, default: random
         size: 15, // width/height of the icon in blocks, default: 8

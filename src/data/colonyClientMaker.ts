@@ -33,3 +33,6 @@ const colonyClientMaker = async () => {
 }
 
 export default colonyClientMaker;
+
+export const colonyClientInstance = colonyClientMaker();
+export const providerInstance = provider;
