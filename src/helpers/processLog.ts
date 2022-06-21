@@ -22,7 +22,7 @@ const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDes
     }
 
     // 
-    const amount = (singleLog: LogDescription) => new utils.BigNumber(singleLog.values.amount);
+    const amount = (singleLog: LogDescription) => new utils.BigNumber(singleLog.values.amount).toString();;
 
     result.secondary = moment(await date(eventLog)).format("DD MMM")
 
@@ -41,7 +41,17 @@ const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDes
     else if (parsedLog.name === "PayoutClaimed") {
         //  event PayoutClaimed(address agent, uint256 indexed fundingPotId, address token, uint256 amount);  
         const userAddress = await address(parsedLog);
-        result.primary = `${userAddress} claimed ${amount(parsedLog)} payout from pot ${parsedLog.values.fundingPotId}`
+        // result.primary = `User ${userAddress} claimed ${amount(parsedLog)} payout from pot ${parsedLog.values.fundingPotId}`
+
+
+        result.primary = `
+            User  <span class="heavy">${userAddress} </span>
+            claimed  <span class="heavy">${amount(parsedLog)} </span>
+            payout from pot  <span class="heavy">${parsedLog.values.fundingPotId}</span>
+           
+        `
+
+
         result.avatarSeed = userAddress
     }
     else if (parsedLog.name === "DomainAdded") {

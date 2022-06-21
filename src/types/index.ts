@@ -1,5 +1,7 @@
 import { LogDescription } from 'ethers/utils/interface'
 import { Log } from 'ethers/providers/abstract-provider';
+import '../fonts/muli/Muli.ttf';
+import '../fonts/muli/Muli-Bold.ttf';
 
 export type Event = {
     log: Log
@@ -8,7 +10,7 @@ export type Event = {
 
 export type ProcessedLog = {
     avatarSeed: any
-    primary: string
+    primary: any
     secondary: string
 }
 

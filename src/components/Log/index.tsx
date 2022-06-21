@@ -5,6 +5,7 @@ import processLog from '../../helpers/processLog';
 import { useEffect, useState } from 'react';
 import { ProcessedLog } from '../../types';
 import Blockies from 'react-blockies';
+import ReactHtmlParser from 'react-html-parser';
 
 interface Props {
     eventLog: Log,
@@ -26,11 +27,25 @@ const LogComponent = (props: Props) => {
     }, [])
 
 
+
+
     return <div className={styles.container}>
         {/* {avatar || <>avatar</>} */}
-        <Blockies seed={avatarSeed} />
-        <div className={"primary"}> {primary}</div>
-        <div className={"seconday"}> {secondary}</div>
+        <div className={styles.row}>
+            <div className={styles.left_section}>
+                <div className={styles.avatar}><Blockies size={37} seed={avatarSeed} /></div>
+            </div>
+            <div className={styles.right_section}>
+
+                <div>
+                    <div className={"primary"}> {ReactHtmlParser(primary)}</div>
+
+
+                    <div className={"secondary"}> {secondary}</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 }
 

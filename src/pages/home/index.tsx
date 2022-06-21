@@ -41,7 +41,6 @@ const HomePage = (props: Props) => {
 
 
     return <div className={styles.container}>
-        <div> Home Page</div>
         <LogListComponent eventList={events?.slice(0, numberToShow)} />
         <button onClick={showMore}>Show More</button>
         {/* <LogList logList={parsedLogs?.slice(10)} /> */}
