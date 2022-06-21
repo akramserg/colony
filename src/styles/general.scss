@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'mulish';
+    font-style: normal;
+    font-weight: 400;
+    src: local('mulish'), url(../fonts/muli/Muli.ttf) format('ttf');
+}
+
+@font-face {
+    font-family: 'mulish';
+    font-style: normal;
+    font-weight: 700;
+    src: local('mulish'), url(../fonts/muli/Muli-Bold.ttf) format('ttf');
+}
+
+
+
+
+html {
+    font-family: mulish;
+    font-weight: 400;
+}
+
+.primary {
+    font-size: 14px;
+}
+
+.secondary {
+    font-size: 12px;
+}
