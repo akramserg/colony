@@ -18,6 +18,7 @@ const connectedWallet = wallet.connect(provider);
 
 
 const colonyClientMaker = async () => {
+  console.log("colonyClientMaker")
   // Get a network client instance
   const networkClient = await getColonyNetworkClient(
     Network.Mainnet,

@@ -16,15 +16,19 @@ const LogComponent = (props: Props) => {
     const [secondary, setSecondary] = useState("")
     const [avatarSeed, setAvatarSeed] = useState("")
 
-    const setup = async () => {
-        const result: ProcessedLog = await processLog(props.eventLog, props.parsedLog)
-        setPrimary(result.primary)
-        setSecondary(result.secondary)
-        setAvatarSeed(result.avatarSeed)
-    }
+
     useEffect(() => {
+        const setup = async () => {
+            if (!props.eventLog || !props.parsedLog) {
+                return
+            }
+            const result: ProcessedLog = await processLog(props.eventLog, props.parsedLog)
+            setPrimary(result.primary)
+            setSecondary(result.secondary)
+            setAvatarSeed(result.avatarSeed)
+        }
         setup()
-    }, [])
+    }, [props.eventLog, props.parsedLog])
 
 
 
@@ -36,13 +40,8 @@ const LogComponent = (props: Props) => {
                 <div className={styles.avatar}><Blockies size={37} seed={avatarSeed} /></div>
             </div>
             <div className={styles.right_section}>
-
-                <div>
-                    <div className={"primary"}> {ReactHtmlParser(primary)}</div>
-
-
-                    <div className={"secondary"}> {secondary}</div>
-                </div>
+                <div className={"primary"}> {ReactHtmlParser(primary)}</div>
+                <div className={"secondary"}> {secondary}</div>
             </div>
         </div>
 

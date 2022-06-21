@@ -1,6 +1,5 @@
 import { getBlockTime } from '@colony/colony-js';
 import { Log } from 'ethers/providers/abstract-provider';
-import { LogDescription } from 'ethers/utils/interface';
 import { providerInstance } from './colonyClientMaker';
 
 const date = async (singleLog: Log) => {

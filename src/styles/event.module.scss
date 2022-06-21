@@ -1,19 +1,4 @@
-/*
-Width: 700px
-Height: dynamic
-Margins relative to page are up to you (just take the centered requirement into account)
-Shadow: rgba(62, 118, 244, 0.14) (use your own appreciation skills to determine the appropriate offsets)
-Forms of pagination (infinite scroll, load more, etc) will be appreciated, but are not required
-*/
 
-/*
-Height: 90px
-Padding top, bottom: 26px
-Padding left, right: 20px
-Background: white
-Border-radius: 6px (Note that only the first and last elements in the list have this, and only on the outmost corners -- top left/right for the first one, bottom left/right for the last one)
-Background Hover State: should be existent, but it's up to you what color / effect you choose to apply to it
-*/
 
 .container {
     height: 90px;
@@ -24,8 +9,17 @@ Background Hover State: should be existent, but it's up to you what color / effe
     margin-bottom: 1px;
     box-sizing: border-box;
 
+}
 
 
+.container:first-of-type {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.container:last-of-type {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .row {
@@ -42,9 +36,16 @@ Background Hover State: should be existent, but it's up to you what color / effe
 
 .left_section {
     width: 100px;
+    height: 90px;
     margin: auto;
 }
 
 .right_section {
     width: 600px;
+
+}
+
+.right_section>* {
+    width: 600px;
+
 }

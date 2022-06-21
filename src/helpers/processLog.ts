@@ -1,16 +1,16 @@
 import { LogDescription } from "ethers/utils/interface";
 import { Log } from 'ethers/providers/abstract-provider';
-import { utils } from "ethers";
-import address from '../data/address'
-import { colonyClientInstance } from "../data/colonyClientMaker";
+import getAddress from '../data/address'
 import { ProcessedLog } from "../types";
-import avatar from '../data/avatar'
 import date from '../data/date'
 import moment from 'moment'
+import getAmount from "../data/amount";
+import getRole from "../data/roles";
 
 type processLogFunc = (eventLog: Log | any, parsedLog: LogDescription | any) => Promise<ProcessedLog>
 
 const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDescription | any) => {
+    //DEFAULT VALUES
     const result: ProcessedLog = {
         avatarSeed: "",
         primary: "Primary value",
@@ -21,42 +21,38 @@ const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDes
         return result
     }
 
-    // 
-    const amount = (singleLog: LogDescription) => new utils.BigNumber(singleLog.values.amount).toString();;
-
+    //SET DATE
     result.secondary = moment(await date(eventLog)).format("DD MMM")
 
 
 
     if (parsedLog.name === "ColonyInitialised") {
-        // event ColonyInitialised(address agent, address colonyNetwork, address token); 
         result.primary = `Congratulations! It's a beautiful baby colony!`
         result.avatarSeed = eventLog.address
     }
+
+
     else if (parsedLog.name === "ColonyRoleSet") {
-        // event ColonyRoleSet(address agent, address indexed user, uint256 indexed domainId, uint8 indexed role, bool setTo);        result.primary = `Congratulations! It's a beautiful baby colony!`
-        result.primary = `${eventLog.role} role assigned to user ${eventLog.address} in domain ${eventLog.domainId}`
+        result.primary = `
+             <span class="heavy">${getRole(eventLog.role)} </span>
+             role assigned to user  <span class="heavy"> ${eventLog.address} </span>
+             in domain <span class="heavy">${eventLog.domainId}</span>
+             `
         result.avatarSeed = eventLog.address
     }
+
     else if (parsedLog.name === "PayoutClaimed") {
-        //  event PayoutClaimed(address agent, uint256 indexed fundingPotId, address token, uint256 amount);  
-        const userAddress = await address(parsedLog);
-        // result.primary = `User ${userAddress} claimed ${amount(parsedLog)} payout from pot ${parsedLog.values.fundingPotId}`
-
-
+        let userAddress = await getAddress(parsedLog);
+        if (userAddress) result.avatarSeed = userAddress
         result.primary = `
             User  <span class="heavy">${userAddress} </span>
-            claimed  <span class="heavy">${amount(parsedLog)} </span>
+            claimed  <span class="heavy">${getAmount(parsedLog)} </span>
             payout from pot  <span class="heavy">${parsedLog.values.fundingPotId}</span>
-           
-        `
-
-
+             `
         result.avatarSeed = userAddress
     }
     else if (parsedLog.name === "DomainAdded") {
-        //  event DomainAdded(address agent, uint256 domainId);
-        result.primary = ` Domain ${eventLog.domainId} added`
+        result.primary = `Domain  <span class="heavy">${eventLog.domainId} </span> added`
         result.avatarSeed = eventLog.address
     }
 
@@ -64,41 +60,3 @@ const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDes
 }
 
 export default processLog;
-
-/*
-    ColonyInitialised
-Event logged when Colony is initialised
-
-Required display data and copy:
-
-Primary: Congratulations! It's a beautiful baby colony!
-Secondary: Formatted event date
-Expected event values: ColonyDataTypes.sol#L25-L26
-
-ColonyRoleSet
-Event logged when a user/domain/role is granted or revoked
-
-Required display data and copy:
-
-Primary: ${role} role assigned to user ${userAddress} in domain ${domainId}.
-Secondary: Formatted event date
-Expected event values: ColonyDataTypes.sol#L40-L43
-
-PayoutClaimed
-Event logged when reward payout is claimed
-
-Required display data and copy:
-
-Primary: User ${userAddress} claimed {token} payout from pot ${fundingPotId}.
-Secondary: Formatted event date
-Expected event values: ColonyDataTypes.sol#L68-L71
-
-DomainAdded
-Event logged when a new Domain is added
-
-Required display data and copy:
-
-Primary: Domain ${domainId} added.
-Secondary: Formatted event date
-Expected event values: ColonyDataTypes.sol#L181
-   */

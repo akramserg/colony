@@ -1,12 +1,12 @@
 import { ColonyRole } from '@colony/colony-js';
 
 // This object includes a mapping of role ids to names
-const roles = () => {
+const getRole = (n:number) => {
     //TODO
     //IMPLEMENT
-    console.log(ColonyRole);
-    return ColonyRole
+
+    return ColonyRole[n]
 
 }
 
-export default roles
+export default getRole

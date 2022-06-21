@@ -2,25 +2,27 @@
 import { utils } from 'ethers';
 import { LogDescription } from 'ethers/utils/interface';
 import { colonyClientInstance } from './colonyClientMaker';
-import { ColonyClient, getLogs } from '@colony/colony-js';
+import { ColonyClient } from '@colony/colony-js';
 
-const address = async (singleLog: LogDescription, colonyClient?: ColonyClient) => {
-    // const [singleLog] = parsedLogs;
-    if (!colonyClient) colonyClient = await colonyClientInstance
+const getAddress = async (singleLog: LogDescription, colonyClient?: ColonyClient) => {
+    try {
+        if (!colonyClient) colonyClient = await colonyClientInstance
+        const humanReadableFundingPotId = new utils.BigNumber(
+            singleLog.values.fundingPotId
+        ).toString();
 
+        const {
+            associatedTypeId,
+        } = await colonyClient.getFundingPot(humanReadableFundingPotId);
 
-    const humanReadableFundingPotId = new utils.BigNumber(
-        singleLog.values.fundingPotId
-    ).toString();
+        const result = await colonyClient.getPayment(associatedTypeId);
 
-    const {
-        associatedTypeId,
-    } = await colonyClient.getFundingPot(humanReadableFundingPotId);
+        return result.recipient
 
-    const result = await colonyClient.getPayment(associatedTypeId);
-    // const { recipient: userAddress } = result
-    // console.log(result)
-    return result.recipient
+    } catch (error) {
+        console.log(error)
+        return null;
+    }
 
 }
-export default address
+export default getAddress
