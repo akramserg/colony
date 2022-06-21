@@ -36,7 +36,7 @@ const HomePage = (props: Props) => {
 
         if (e?.eventLogs !== undefined) {
 
-            for (let i = 0; i < e?.eventLogs.length; i++) {
+            for (let i = e?.eventLogs.length - 1; i >= 0; i--) {
                 eventsArray.push({
                     log: e?.eventLogs[i],
                     parsed: e?.parsedLogs[i]
