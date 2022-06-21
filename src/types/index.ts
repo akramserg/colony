@@ -7,7 +7,7 @@ export type Event = {
 }
 
 export type ProcessedLog = {
-    avatar: any
+    avatarSeed: any
     primary: string
     secondary: string
 }

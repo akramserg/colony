@@ -8,11 +8,11 @@ import avatar from '../data/avatar'
 import date from '../data/date'
 import moment from 'moment'
 
-type processLogFunc = (eventLog: Log, parsedLog: LogDescription) => Promise<ProcessedLog>
+type processLogFunc = (eventLog: Log | any, parsedLog: LogDescription | any) => Promise<ProcessedLog>
 
-const processLog: processLogFunc = async (eventLog: Log, parsedLog: LogDescription) => {
+const processLog: processLogFunc = async (eventLog: Log | any, parsedLog: LogDescription | any) => {
     const result: ProcessedLog = {
-        avatar: null,
+        avatarSeed: "",
         primary: "Primary value",
         secondary: "Secondary value"
     }
@@ -21,12 +21,33 @@ const processLog: processLogFunc = async (eventLog: Log, parsedLog: LogDescripti
         return result
     }
 
+    // 
+    const amount = (singleLog: LogDescription) => new utils.BigNumber(singleLog.values.amount);
 
-    if (parsedLog.name === "PayoutClaimed") {
+    result.secondary = moment(await date(eventLog)).format("DD MMM")
+
+
+
+    if (parsedLog.name === "ColonyInitialised") {
+        // event ColonyInitialised(address agent, address colonyNetwork, address token); 
+        result.primary = `Congratulations! It's a beautiful baby colony!`
+        result.avatarSeed = eventLog.address
+    }
+    else if (parsedLog.name === "ColonyRoleSet") {
+        // event ColonyRoleSet(address agent, address indexed user, uint256 indexed domainId, uint8 indexed role, bool setTo);        result.primary = `Congratulations! It's a beautiful baby colony!`
+        result.primary = `${eventLog.role} role assigned to user ${eventLog.address} in domain ${eventLog.domainId}`
+        result.avatarSeed = eventLog.address
+    }
+    else if (parsedLog.name === "PayoutClaimed") {
+        //  event PayoutClaimed(address agent, uint256 indexed fundingPotId, address token, uint256 amount);  
         const userAddress = await address(parsedLog);
-        result.primary = `${userAddress} claimed ${parsedLog.values.amount} payout from pot ${parsedLog.values.fundingPotId}`
-        result.secondary = moment(await date(eventLog)).format("DD MMM")
-        result.avatar = avatar(userAddress)
+        result.primary = `${userAddress} claimed ${amount(parsedLog)} payout from pot ${parsedLog.values.fundingPotId}`
+        result.avatarSeed = userAddress
+    }
+    else if (parsedLog.name === "DomainAdded") {
+        //  event DomainAdded(address agent, uint256 domainId);
+        result.primary = ` Domain ${eventLog.domainId} added`
+        result.avatarSeed = eventLog.address
     }
 
     return result

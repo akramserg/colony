@@ -13,8 +13,12 @@ interface Props {
 
 const HomePage = (props: Props) => {
     const [events, setEvents] = useState<Event[]>()
+    const [numberToShow, setNumberToShow] = useState(10)
 
-
+    const showMore = () => {
+        setNumberToShow(numberToShow + 10)
+        console.log(numberToShow)
+    }
     const setup = async () => {
         const colonyClient = await colonyClientInstance
         const e = await eventLogsMaker(colonyClient)
@@ -38,7 +42,8 @@ const HomePage = (props: Props) => {
 
     return <div className={styles.container}>
         <div> Home Page</div>
-        <LogListComponent eventList={events?.slice(0, 10)} />
+        <LogListComponent eventList={events?.slice(0, numberToShow)} />
+        <button onClick={showMore}>Show More</button>
         {/* <LogList logList={parsedLogs?.slice(10)} /> */}
     </div>
 }
